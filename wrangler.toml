@@ -1,0 +1,17 @@
+# Cloudflare Pages + D1 cho web MONA Fashion
+# Deploy: npx @cloudflare/next-on-pages  (đọc file này để lấy binding D1)
+# KHÔNG đưa file này lên git cùng với secret — file này không chứa secret.
+
+name = "mona-fashion"
+compatibility_date = "2026-11-09"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output"
+
+# Database D1 "mona-fashion" (đã tạo trên Cloudflare ngày 2026-10-25).
+# Trong code, binding này xuất hiện dưới tên env.DB
+# (xem src/lib/prisma.ts). Nạp dữ liệu mẫu bằng file
+# mona-fashion-d1-v2.sql trong D1 console của Cloudflare.
+[[d1_databases]]
+binding = "DB"
+database_name = "mona-fashion"
+database_id = "41e2b231-29ec-45dd-a455-2b5123453088"
