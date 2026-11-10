@@ -1,0 +1,10 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+/* Font dung cua ban goc MONA (theme Sober - trendstore.monamedia.net), da doi chieu tu CSS goc:
+   - BODY (noi dung, footer, nut bam, o nhap lieu): Poppins 300-700
+   - Montserrat 100-900 chi danh cho tieu de h1-h6, menu dieu huong, tieu de cot footer (widget title), tieu de trang.
+   Ca hai font deu nap qua next/font/google voi subset vietnamese (xem src/app/layout.tsx). */
+body { @apply bg-white text-ink font-sans antialiased; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading), "Montserrat", sans-serif; }
+.container-x { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+
+@keyframes heroFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
