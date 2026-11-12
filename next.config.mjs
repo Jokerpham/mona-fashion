@@ -1,7 +1,20 @@
 import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    // Cho phép next/image tải ảnh ngoài từ thoitrangbigsize.vn (sản phẩm
+    // "Áo sơ mi nơ len" dùng link ảnh ngoài này; không có remotePatterns
+    // thì ảnh bị vỡ trên shop dù admin vẫn hiện vì admin dùng <img> thường).
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "thoitrangbigsize.vn",
+        pathname: "/wp-content/uploads/**",
+      },
+    ],
+  },
+};
 export default nextConfig;
 
 // Chạy local (`npm run dev`): nạp các binding Cloudflare khai báo trong
