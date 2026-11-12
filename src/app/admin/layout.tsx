@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { useOrders, useProducts } from "@/lib/store";
+import { useOrders, useProducts, getSeenOrderIds, ORDERS_SEEN_EVENT } from "@/lib/store";
 import {
   ADMIN_ROLES,
   canAccessSection,
@@ -281,7 +281,7 @@ function AdminLogin() {
             <EyeIcon open={showPassword} />
           </button>
         </div>
-        <button className="bg-black text-white w-full py-3 tracking-[0.2em] text-sm hover:bg-neutral-800 transition-colors">ĐĂNG NHẬP</button>
+        <button className="bg-black font-heading text-white w-full py-3 tracking-[0.2em] text-sm hover:bg-neutral-800 transition-colors">ĐĂNG NHẬP</button>
         <Link href="/admin/forgot-password" className="block text-center text-sm underline mt-4">Quên mật khẩu?</Link>
         <Link href="/" className="block text-center text-sm underline mt-5">← Về trang chủ shop</Link>
       </form>
@@ -372,6 +372,14 @@ function SidebarContent({ pathname, avatarName, title, email, nav, lowStock, new
           );
         })}
       </nav>
+
+      {/* Dòng credit cuối sidebar, dưới mục Cài đặt & Bảo mật. */}
+      <p className="px-5 pb-5 pt-2 text-center text-[11px] leading-relaxed text-white/45">
+        © Thiết kế website và lập trình bởi{" "}
+        <span className="text-violet-400">MONA .Media</span>
+        {" / "}
+        <span className="text-violet-400">Web design</span>
+      </p>
     </>
   );
 }
@@ -384,10 +392,20 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { products } = useProducts();
   const { orders } = useOrders();
+  /* Số đơn chờ xác nhận ở menu chỉ đếm đơn CHƯA xem. Mở trang Đơn hàng thì
+     các đơn đang hiện được đánh dấu đã xem nên số biến mất; chưa vào thì
+     vẫn hiển thị. Đọc sau khi mount để tránh lệch khi render ở server. */
+  const [seenOrderIds, setSeenOrderIds] = useState<string[]>([]);
+  useEffect(() => {
+    setSeenOrderIds(getSeenOrderIds());
+    const onSeen = () => setSeenOrderIds(getSeenOrderIds());
+    window.addEventListener(ORDERS_SEEN_EVENT, onSeen);
+    return () => window.removeEventListener(ORDERS_SEEN_EVENT, onSeen);
+  }, []);
 
-  // Badge menu: "!" khi bất kỳ size nào tồn kho <= 5; số đơn chờ xác nhận.
+  // Badge menu: "!" khi bất kỳ size nào tồn kho <= 5; số đơn chờ xác nhận chưa xem.
   const lowStock = products.some((p) => (p.sizeStocks ?? []).some((s) => s.stock <= 5));
-  const newOrderCount = orders.filter((o) => o.status === "Chờ xác nhận").length;
+  const newOrderCount = orders.filter((o) => o.status === "Chờ xác nhận" && !seenOrderIds.includes(o.id)).length;
 
   useEffect(() => {
     const t = setTimeout(() => setChecked(true), 250);

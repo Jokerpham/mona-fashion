@@ -7,8 +7,8 @@
    Chi tiết đơn có nút in hoá đơn / phiếu giao hàng (khung in chỉ in đúng
    tờ giấy đó). Khi chưa có đơn nào, có nút tạo đơn thủ công (khách đặt
    qua điện thoại/Facebook) — đơn khách tự đặt trên shop vẫn tự hiện về. */
-import { Fragment, useMemo, useState } from "react";
-import { useOrders, useProducts, pushOrder, newId, type Order, type OrderItem } from "@/lib/store";
+import { Fragment, useEffect, useMemo, useState } from "react";
+import { useOrders, useProducts, pushOrder, newId, markOrdersSeen, type Order, type OrderItem } from "@/lib/store";
 import { useAuth } from "@/context/AuthContext";
 import { logActivity } from "@/lib/activity";
 import {
@@ -58,7 +58,7 @@ function PrintDocView({ doc, onClose }: { doc: PrintDoc; onClose: () => void }) 
             {doc.type === "invoice" ? "Xem trước hoá đơn — bấm In để in ra giấy." : "Xem trước phiếu giao hàng — bấm In để in ra giấy."}
           </p>
           <div className="flex gap-2 shrink-0">
-            <button onClick={() => window.print()} className="bg-black text-white px-5 py-2 text-sm hover:bg-neutral-800">In ngay</button>
+            <button onClick={() => window.print()} className="bg-black font-heading text-white px-5 py-2 text-sm hover:bg-neutral-800">In ngay</button>
             <button onClick={onClose} className="border px-5 py-2 text-sm hover:border-black">Đóng</button>
           </div>
         </div>
@@ -149,6 +149,11 @@ export default function AdminOrders() {
   const { orders, setStatus, deleteOrder, refreshOrders } = useOrders();
   const { products } = useProducts();
   const { user } = useAuth();
+  /* Mở trang Đơn hàng là đã xem các đơn đang hiện → đánh dấu đã xem để số
+     ở menu biến mất; đơn mới về sau vẫn hiện số lại. */
+  useEffect(() => {
+    if (orders.length > 0) markOrdersSeen(orders.map((o) => o.id));
+  }, [orders]);
   const [openId, setOpenId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | Order["status"]>("all");
@@ -272,7 +277,7 @@ export default function AdminOrders() {
           <p className="text-sm text-neutral-500 mt-1">Đơn của khách đặt ở trang Thanh toán sẽ tự hiện về đây. Bấm vào mã đơn để xem chi tiết.</p>
         </div>
         {canManual && (
-          <button onClick={() => { setShowManual(!showManual); setMError(""); }} className="bg-black text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
+          <button onClick={() => { setShowManual(!showManual); setMError(""); }} className="bg-black font-heading text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
             + TẠO ĐƠN THỦ CÔNG
           </button>
         )}
@@ -333,7 +338,7 @@ export default function AdminOrders() {
           )}
           <p className="font-medium mt-4">Tổng tiền: {formatPrice(manualTotal)}</p>
           <div className="flex gap-2 mt-4">
-            <button className="bg-black text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">TẠO ĐƠN HÀNG</button>
+            <button className="bg-black font-heading text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">TẠO ĐƠN HÀNG</button>
             <button type="button" onClick={() => setShowManual(false)} className="border bg-white px-6 py-2.5 text-sm hover:border-black">Huỷ</button>
           </div>
         </form>
@@ -361,7 +366,7 @@ export default function AdminOrders() {
             <p className="text-neutral-500 text-sm">Chưa có đơn hàng nào.</p>
             <p className="text-neutral-500 text-sm mt-1">Đơn hàng cũng tự hiện ở đây khi khách đặt trên shop.</p>
             {canManual && (
-              <button onClick={() => setShowManual(true)} className="bg-black text-white px-5 py-2.5 text-sm mt-4 hover:bg-neutral-800">
+              <button onClick={() => setShowManual(true)} className="bg-black font-heading text-white px-5 py-2.5 text-sm mt-4 hover:bg-neutral-800">
                 Tạo đơn hàng thủ công
               </button>
             )}

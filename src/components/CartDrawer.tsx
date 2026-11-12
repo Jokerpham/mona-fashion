@@ -18,7 +18,7 @@ export default function CartDrawer(){
           <button onClick={()=>remove(i.product.slug,i.size)} className="text-neutral-400">×</button>
         </div>))}</div>
         <div className="border-t mt-8 pt-4 flex justify-between font-semibold"><span>Tổng cộng</span><span>{formatPrice(total)}</span></div>
-        <Link href="/checkout" onClick={()=>setOpen(false)} className="block text-center bg-black text-white py-3 mt-5 tracking-widest text-sm">THANH TOÁN</Link>
+        <Link href="/checkout" onClick={()=>setOpen(false)} className="block text-center bg-black font-heading text-white py-3 mt-5 tracking-widest text-sm">THANH TOÁN</Link>
       </>}
     </aside>
   </div>);

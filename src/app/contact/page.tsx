@@ -139,7 +139,7 @@ function ContactChatLookup() {
                   className={`max-w-[85%] rounded px-4 py-3 ${
                     r.sender === "admin"
                       ? "bg-neutral-100 text-neutral-900"
-                      : "ml-auto bg-black text-white"
+                      : "ml-auto bg-black font-heading text-white"
                   }`}
                 >
                   <p className="text-xs font-medium opacity-70">
@@ -307,14 +307,6 @@ export default function ContactPage() {
               </button>
             </form>
           )}
-
-          <button
-            aria-label="Về đầu trang"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="absolute right-5 top-1/2 w-11 h-11 rounded-full border border-neutral-400 bg-white/70 grid place-items-center hover:bg-white"
-          >
-            ↑
-          </button>
         </div>
       </section>
 

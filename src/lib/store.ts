@@ -148,6 +148,53 @@ export function useOrders() {
   };
 }
 
+/* Số đơn "Chờ xác nhận" ở menu: chỉ đếm đơn CHƯA xem. Khi admin mở trang
+   Đơn hàng, các đơn đang hiện được đánh dấu đã xem (lưu trong trình duyệt)
+   nên số biến mất; đơn mới về sau vẫn hiện số lại. */
+const ORDERS_SEEN_KEY = "mona-orders-seen";
+export const ORDERS_SEEN_EVENT = "mona:orders-seen";
+export function getSeenOrderIds(): string[] {
+  try {
+    const raw = localStorage.getItem(ORDERS_SEEN_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.filter((x): x is string => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+export function markOrdersSeen(ids: string[]) {
+  try {
+    const prev = getSeenOrderIds();
+    const merged = Array.from(new Set([...prev, ...ids]));
+    if (merged.length === prev.length) return;
+    localStorage.setItem(ORDERS_SEEN_KEY, JSON.stringify(merged));
+  } catch {
+    return;
+  }
+  window.dispatchEvent(new Event(ORDERS_SEEN_EVENT));
+}
+
+/* Chuông tin nhắn: "Xóa hết" chỉ ẩn thông báo khỏi chuông (lưu trong trình
+   duyệt), tin nhắn gốc vẫn còn nguyên ở trang Tin nhắn liên hệ. */
+const BELL_DISMISSED_KEY = "mona-bell-dismissed";
+export function getDismissedMessageIds(): string[] {
+  try {
+    const raw = localStorage.getItem(BELL_DISMISSED_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.filter((x): x is string => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+export function dismissMessages(ids: string[]) {
+  try {
+    const merged = Array.from(new Set([...getDismissedMessageIds(), ...ids]));
+    localStorage.setItem(BELL_DISMISSED_KEY, JSON.stringify(merged));
+  } catch {
+    /* bỏ qua nếu trình duyệt chặn localStorage */
+  }
+}
+
 export function useMessages() {
   const { list, refresh, ready } = useApiList<ContactMessage>("/api/messages", []);
   return {
@@ -180,8 +227,8 @@ export function useSubscribers() {
 export async function pushOrder(order: Order) {
   await api("/api/orders", { method: "POST", body: JSON.stringify(order) });
 }
-export async function pushMessage(msg: ContactMessage) {
-  await api("/api/messages", { method: "POST", body: JSON.stringify(msg) });
+export async function pushMessage(msg: ContactMessage): Promise<ContactMessage> {
+  return api<ContactMessage>("/api/messages", { method: "POST", body: JSON.stringify(msg) });
 }
 /* Đoạn chat của tin nhắn liên hệ: lấy các lượt trả lời + gửi trả lời mới.
    sender = "admin" (trả lời trong trang quản trị) hoặc "customer" (khách

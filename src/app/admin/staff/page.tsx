@@ -104,7 +104,7 @@ export default function AdminStaff() {
             được phân quyền. Tài khoản chỉ lưu trên trình duyệt này (bản demo).
           </p>
         </div>
-        <button onClick={openAdd} className="bg-black text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
+        <button onClick={openAdd} className="bg-black font-heading text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
           + THÊM NHÂN SỰ
         </button>
       </div>
@@ -166,7 +166,7 @@ export default function AdminStaff() {
             </div>
           </div>
           <div className="flex gap-2 mt-6">
-            <button className="bg-black text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
+            <button className="bg-black font-heading text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
               {editing ? "LƯU THAY ĐỔI" : "THÊM NHÂN SỰ"}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="border bg-white px-6 py-2.5 text-sm hover:border-black">

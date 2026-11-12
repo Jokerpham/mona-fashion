@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { pushSubscriber } from "@/lib/store";
 
@@ -23,6 +23,15 @@ const PhoneIcon = () => (
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  /* Nút về đầu trang nổi: luôn đi theo khi lướt lên/xuống, chỉ hiện khi đã
+     lướt xuống khỏi đầu trang, bấm thì cuộn mượt về đầu. */
+  const [showTop, setShowTop] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 300);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <footer className="font-sans">
@@ -157,15 +166,16 @@ export default function Footer() {
         © Thiết kế website và lập trình bởi{" "}
         <span className="font-bold text-neutral-700">MONA</span>
         <span className="font-semibold text-[#8b2fe0]"> .Media / Website</span>
-        {/* Nút về đầu trang - hình tròn góc phải như ảnh mẫu */}
-        <button
-          aria-label="Về đầu trang"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="absolute right-5 -top-7 w-12 h-12 rounded-full border-2 border-black bg-white text-black text-lg grid place-items-center hover:bg-black hover:text-white transition"
-        >
-          ↑
-        </button>
       </div>
+      {/* Nút về đầu trang nổi: hình tròn trắng góc phải, đi theo khi lướt
+          lên/xuống, chỉ hiện khi đã lướt xuống khỏi đầu trang. */}
+      <button
+        aria-label="Về đầu trang"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className={`fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full border-2 border-black bg-white text-black text-lg grid place-items-center hover:bg-black hover:text-white transition-all duration-300 ${showTop ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      >
+        ↑
+      </button>
     </footer>
   );
 }

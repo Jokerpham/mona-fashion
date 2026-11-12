@@ -139,7 +139,7 @@ export default function AdminProducts() {
             <button onClick={() => { if (confirm("Khôi phục danh sách sản phẩm mẫu ban đầu? Mọi thay đổi sản phẩm sẽ mất.")) { resetProducts(); logActivity(user?.email, "Khôi phục sản phẩm mẫu", "Khôi phục danh sách sản phẩm mẫu ban đầu."); } }} className="border bg-white px-4 py-2.5 text-sm hover:border-black">Khôi phục mẫu</button>
           )}
           {canContent && (
-            <button onClick={openAdd} className="bg-black text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800">+ THÊM SẢN PHẨM</button>
+            <button onClick={openAdd} className="bg-black font-heading text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800">+ THÊM SẢN PHẨM</button>
           )}
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function AdminProducts() {
             </div>
           )}
           <div className="flex gap-2 mt-6">
-            <button className="bg-black text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">{editing ? "LƯU THAY ĐỔI" : "THÊM SẢN PHẨM"}</button>
+            <button className="bg-black font-heading text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">{editing ? "LƯU THAY ĐỔI" : "THÊM SẢN PHẨM"}</button>
             <button type="button" onClick={() => setShowForm(false)} className="border bg-white px-6 py-2.5 text-sm hover:border-black">Huỷ</button>
           </div>
         </form>
@@ -253,7 +253,7 @@ export default function AdminProducts() {
                         ))}
                       </div>
                       <div className="flex gap-2 mt-4">
-                        <button onClick={saveStock} className="bg-black text-white px-5 py-2 text-sm hover:bg-neutral-800">LƯU TỒN KHO</button>
+                        <button onClick={saveStock} className="bg-black font-heading text-white px-5 py-2 text-sm hover:bg-neutral-800">LƯU TỒN KHO</button>
                         <button onClick={() => setStockEditing(null)} className="border bg-white px-5 py-2 text-sm hover:border-black">Huỷ</button>
                       </div>
                     </td>

@@ -102,7 +102,7 @@ export default function AdminMessages() {
                 key={r.id}
                 className={`max-w-[85%] rounded px-4 py-3 ${
                   r.sender === "admin"
-                    ? "ml-auto bg-black text-white"
+                    ? "ml-auto bg-black font-heading text-white"
                     : "bg-neutral-100 text-neutral-900"
                 }`}
               >
@@ -128,7 +128,7 @@ export default function AdminMessages() {
             <button
               onClick={sendReply}
               disabled={sending || !replyBody.trim()}
-              className="bg-black text-white px-5 py-2.5 text-sm mt-3 hover:bg-neutral-800 disabled:opacity-50"
+              className="bg-black font-heading text-white px-5 py-2.5 text-sm mt-3 hover:bg-neutral-800 disabled:opacity-50"
             >
               {sending ? "Đang gửi..." : "Gửi trả lời"}
             </button>
@@ -139,7 +139,7 @@ export default function AdminMessages() {
               href={`mailto:${open.email}?subject=${encodeURIComponent(
                 `Re: ${open.subject || "Liên hệ MONA Fashion"}`,
               )}`}
-              className="bg-black text-white px-5 py-2.5 text-sm hover:bg-neutral-800"
+              className="bg-black font-heading text-white px-5 py-2.5 text-sm hover:bg-neutral-800"
             >
               Trả lời qua email
             </a>

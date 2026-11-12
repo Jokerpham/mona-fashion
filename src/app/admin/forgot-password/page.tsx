@@ -110,7 +110,7 @@ export default function AdminForgotPasswordPage() {
             <EyeIcon open={showConfirm} />
           </button>
         </div>
-        <button className="bg-black text-white w-full py-3 tracking-[0.2em] text-sm hover:bg-neutral-800 transition-colors">ĐẶT LẠI MẬT KHẨU</button>
+        <button className="bg-black font-heading text-white w-full py-3 tracking-[0.2em] text-sm hover:bg-neutral-800 transition-colors">ĐẶT LẠI MẬT KHẨU</button>
         <p className="text-xs text-neutral-500 mt-5 leading-relaxed">
           Bản demo chưa gửi email xác minh, nên đặt lại mật khẩu chỉ cần đúng email quản trị.
           Trước khi bán thật cần thay bằng hệ thống tài khoản thật có xác minh email.

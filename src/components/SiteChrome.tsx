@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FloatingChat from "@/components/FloatingChat";
 
 /* Bọc toàn site: trong khu vực /admin thì ẩn Header/Footer của shop
    để trang quản trị có giao diện riêng toàn màn hình */
@@ -14,6 +15,7 @@ export default function SiteChrome({ children }: { children: ReactNode }) {
       <Header />
       <main>{children}</main>
       <Footer />
+      <FloatingChat />
     </>
   );
 }

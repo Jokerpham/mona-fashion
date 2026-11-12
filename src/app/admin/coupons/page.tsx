@@ -104,7 +104,7 @@ export default function AdminCoupons() {
             setError("");
             setShowForm(true);
           }}
-          className="bg-black text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800"
+          className="bg-black font-heading text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800"
         >
           + THÊM MÃ GIẢM GIÁ
         </button>
@@ -197,7 +197,7 @@ export default function AdminCoupons() {
             </div>
           </div>
           <div className="flex gap-2 mt-6">
-            <button className="bg-black text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
+            <button className="bg-black font-heading text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
               THÊM MÃ
             </button>
             <button

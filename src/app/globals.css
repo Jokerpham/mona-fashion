@@ -1,10 +1,14 @@
 @tailwind base; @tailwind components; @tailwind utilities;
 /* Font dung cua ban goc MONA (theme Sober - trendstore.monamedia.net), da doi chieu tu CSS goc:
-   - BODY (noi dung, footer, nut bam, o nhap lieu): Poppins 300-700
-   - Montserrat 100-900 chi danh cho tieu de h1-h6, menu dieu huong, tieu de cot footer (widget title), tieu de trang.
-   Ca hai font deu nap qua next/font/google voi subset vietnamese (xem src/app/layout.tsx). */
+   - BODY (noi dung, footer, nut bam, o nhap lieu): truoc day dung Poppins 300-700, NHUNG Poppins
+     KHONG co bo chu tieng Viet nen cac chu co dau (Ạ, Ủ, Đ, Ộ...) bi roi ve font khac, to nho khong
+     deu. Tu 11/11/2026 doi toan bo BODY sang Montserrat (co subset vietnamese) de chu deu va dep.
+   - Montserrat 100-900 dung cho ca BODY va tieu de h1-h6, menu dieu huong, tieu de cot footer.
+   Font nap qua next/font/google voi subset vietnamese (xem src/app/layout.tsx). */
 body { @apply bg-white text-ink font-sans antialiased; }
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading), "Montserrat", sans-serif; }
 .container-x { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
 
 @keyframes heroFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fadeUp { animation: fadeUp 0.35s ease both; }

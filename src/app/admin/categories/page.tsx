@@ -81,7 +81,7 @@ export default function AdminCategories() {
             nguyên để không đứt liên kết với sản phẩm.
           </p>
         </div>
-        <button onClick={openAdd} className="bg-black text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
+        <button onClick={openAdd} className="bg-black font-heading text-white px-4 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
           + THÊM DANH MỤC
         </button>
       </div>
@@ -117,7 +117,7 @@ export default function AdminCategories() {
             </div>
           </div>
           <div className="flex gap-2 mt-6">
-            <button className="bg-black text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
+            <button className="bg-black font-heading text-white px-6 py-2.5 text-sm tracking-wider hover:bg-neutral-800">
               {editing ? "LƯU THAY ĐỔI" : "THÊM DANH MỤC"}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="border bg-white px-6 py-2.5 text-sm hover:border-black">

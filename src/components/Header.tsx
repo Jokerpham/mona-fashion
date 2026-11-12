@@ -108,7 +108,7 @@ export default function Header(){
               placeholder="Tìm kiếm sản phẩm..."
               className="flex-1 bg-transparent outline-none text-xl md:text-2xl font-light placeholder:text-neutral-400"
             />
-            <button type="submit" className="bg-black text-white font-display text-[11px] tracking-[0.2em] uppercase px-5 py-2.5 hover:bg-neutral-800 transition-colors cursor-pointer">
+            <button type="submit" className="bg-black font-heading text-white text-[11px] tracking-[0.2em] uppercase px-5 py-2.5 hover:bg-neutral-800 transition-colors cursor-pointer">
               Tìm kiếm
             </button>
           </div>

@@ -151,7 +151,7 @@ export default function AdminSettingsPage() {
         {passField("st-pw-current", "Mật khẩu hiện tại", current, setCurrent, showCurrent, setShowCurrent)}
         {passField("st-pw-new", "Mật khẩu mới", next, setNext, showNext, setShowNext)}
         {passField("st-pw-confirm", "Nhập lại mật khẩu mới", confirm, setConfirm, showConfirm, setShowConfirm)}
-        <button className="bg-black text-white px-8 py-3 text-sm tracking-[0.2em] hover:bg-neutral-800 transition-colors">
+        <button className="bg-black font-heading text-white px-8 py-3 text-sm tracking-[0.2em] hover:bg-neutral-800 transition-colors">
           ĐỔI MẬT KHẨU
         </button>
       </form>

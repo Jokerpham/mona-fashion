@@ -163,7 +163,7 @@ export default function AdminAvatar({ name }: { name: string }) {
               </button>
               <button
                 onClick={() => setOpen(false)}
-                className="bg-black text-white px-5 py-2.5 text-sm hover:bg-neutral-800"
+                className="bg-black font-heading text-white px-5 py-2.5 text-sm hover:bg-neutral-800"
               >
                 Xong
               </button>
