@@ -26,12 +26,19 @@ export default function Footer() {
   /* Nút về đầu trang nổi: luôn đi theo khi lướt lên/xuống, chỉ hiện khi đã
      lướt xuống khỏi đầu trang, bấm thì cuộn mượt về đầu. */
   const [showTop, setShowTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 300);
+    const onScroll = () => {
+      setShowTop(window.scrollY > 300);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  const RING_R = 26;
+  const RING_C = 2 * Math.PI * RING_R;
 
   return (
     <footer className="font-sans">
@@ -169,13 +176,23 @@ export default function Footer() {
       </div>
       {/* Nút về đầu trang nổi: hình tròn trắng góc phải, đi theo khi lướt
           lên/xuống, chỉ hiện khi đã lướt xuống khỏi đầu trang. */}
-      <button
-        aria-label="Về đầu trang"
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full border-2 border-black bg-white text-black text-lg grid place-items-center hover:bg-black hover:text-white transition-all duration-300 ${showTop ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      <div
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 transition-all duration-300 ${showTop ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       >
-        ↑
-      </button>
+        {/* Vòng tròn tiến độ cuộn trang (màu trắng) bao quanh nút về đầu trang:
+            chạy tròn dần theo % trang đã cuộn. */}
+        <svg className="absolute inset-0 w-14 h-14 -rotate-90" viewBox="0 0 56 56" aria-hidden="true">
+          <circle cx="28" cy="28" r={RING_R} fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2.5" />
+          <circle cx="28" cy="28" r={RING_R} fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeDasharray={RING_C} strokeDashoffset={RING_C * (1 - scrollProgress)} />
+        </svg>
+        <button
+          aria-label="Về đầu trang"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="absolute left-1 top-1 w-12 h-12 rounded-full border-2 border-black bg-white text-black text-lg grid place-items-center hover:bg-black hover:text-white transition-colors duration-300"
+        >
+          ↑
+        </button>
+      </div>
     </footer>
   );
 }
