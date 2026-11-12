@@ -81,7 +81,7 @@ export default function FloatingChat() {
     }
   };
 
-  /* Tự làm mới đoạn chat để thấy trả lời mới của shop. */
+  /* Tự làm mới đoạn chat mỗi 5 giây để thấy trả lời mới của shop. */
   useEffect(() => {
     if (!open || !openMsg) return;
     const id = setInterval(async () => {
@@ -90,7 +90,7 @@ export default function FloatingChat() {
       } catch {
         /* bỏ qua */
       }
-    }, 15000);
+    }, 5000);
     return () => clearInterval(id);
   }, [open, openMsg]);
 
@@ -305,7 +305,7 @@ export default function FloatingChat() {
                 <p className="font-medium text-sm truncate flex-1">{openMsg.subject || "(Không có chủ đề)"}</p>
               </div>
               <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
-                <div className="bg-neutral-100 text-neutral-900 rounded px-3 py-2.5 max-w-[85%]">
+                <div className="ml-auto bg-black text-white rounded px-3 py-2.5 max-w-[85%]">
                   <p className="text-xs font-medium opacity-70">
                     {openMsg.name} · {new Date(openMsg.date).toLocaleString("vi-VN")}
                   </p>
@@ -315,7 +315,7 @@ export default function FloatingChat() {
                   <div
                     key={r.id}
                     className={`rounded px-3 py-2.5 max-w-[85%] ${
-                      r.sender === "admin" ? "ml-auto bg-black text-white" : "bg-neutral-100 text-neutral-900"
+                      r.sender === "admin" ? "bg-neutral-100 text-neutral-900" : "ml-auto bg-black text-white"
                     }`}
                   >
                     <p className="text-xs font-medium opacity-70">

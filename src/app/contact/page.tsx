@@ -129,7 +129,7 @@ function ContactChatLookup() {
             </p>
 
             <div className="mt-5 space-y-3">
-              <div className="max-w-[85%] bg-neutral-100 rounded px-4 py-3">
+              <div className="ml-auto max-w-[85%] bg-black font-heading text-white rounded px-4 py-3">
                 <p className="text-xs font-medium opacity-70">{openMsg.name}</p>
                 <p className="text-sm leading-relaxed mt-1 whitespace-pre-line">{openMsg.message}</p>
               </div>
