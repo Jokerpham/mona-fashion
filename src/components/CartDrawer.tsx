@@ -15,7 +15,9 @@ export default function CartDrawer(){
           <div className="flex-1"><p className="text-sm font-medium">{i.product.name}</p><p className="text-xs text-neutral-500 mt-1">Size: {i.size}</p>
           <div className="flex items-center gap-3 mt-2"><button onClick={()=>changeQty(i.product.slug,i.size,-1)} className="border px-2">-</button><span>{i.qty}</span><button onClick={()=>changeQty(i.product.slug,i.size,1)} className="border px-2">+</button></div>
           <p className="text-sm font-semibold mt-2">{formatPrice(i.product.price*i.qty)}</p></div>
-          <button onClick={()=>remove(i.product.slug,i.size)} className="text-neutral-400">×</button>
+          {/* Nút xóa 1 dòng khỏi giỏ: bấm là lọc bỏ đúng dòng này (slug + size),
+              giỏ và Tổng cộng cập nhật ngay, localStorage lưu lại sau đó. */}
+          <button onClick={()=>remove(i.product.slug,i.size)} aria-label={`Xóa ${i.product.name} khỏi giỏ`} title="Xóa khỏi giỏ" className="text-neutral-400 hover:text-red-600 text-2xl leading-none h-8 w-8 shrink-0 grid place-items-center transition-colors">×</button>
         </div>))}</div>
         <div className="border-t mt-8 pt-4 flex justify-between font-semibold"><span>Tổng cộng</span><span>{formatPrice(total)}</span></div>
         <Link href="/checkout" onClick={()=>setOpen(false)} className="block text-center bg-black font-heading text-white py-3 mt-5 tracking-widest text-sm">THANH TOÁN</Link>
