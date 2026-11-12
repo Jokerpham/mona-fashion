@@ -47,6 +47,20 @@ export default function AdminMessages() {
     };
   }, [open]);
 
+  /* Tự làm mới đoạn chat mỗi 5 giây khi đang mở một tin, để thấy tin mới
+     của khách gửi tới mà không cần tải lại trang — nhắn qua nhắn lại liên tục. */
+  useEffect(() => {
+    if (!open) return;
+    const id = setInterval(() => {
+      fetchReplies(open.id)
+        .then((rows) => setReplies(rows))
+        .catch(() => {
+          /* bỏ qua */
+        });
+    }, 5000);
+    return () => clearInterval(id);
+  }, [open]);
+
   const sendReply = async () => {
     if (!open || sending) return;
     const text = replyBody.trim();
