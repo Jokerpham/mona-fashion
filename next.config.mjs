@@ -1,7 +1,15 @@
 import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  // Cloudflare Pages + @cloudflare/next-on-pages KHÔNG chạy được trình tối
+  // ưu ảnh `/_next/image` của Next.js (trả 404), nên toàn bộ ảnh dùng
+  // next/image (slide hero, ảnh sản phẩm) đều vỡ trên link thật, trong khi
+  // ảnh <img> thường vẫn hiện. Bật unoptimized để next/image xuất thẳng
+  // đường dẫn file tĩnh trong public/ (vd /images/site/slide-1.jpg), ảnh
+  // vẫn hiện bình thường, chỉ không resize tự động.
+  images: { unoptimized: true },
+};
 export default nextConfig;
 
 // Chạy local (`npm run dev`): nạp các binding Cloudflare khai báo trong
