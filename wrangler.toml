@@ -5,7 +5,7 @@
 name = "mona-fashion"
 compatibility_date = "2026-11-09"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = ".vercel/output"
+pages_build_output_dir = ".vercel/output/static"
 
 # Database D1 "mona-fashion" (đã tạo trên Cloudflare ngày 2026-10-25).
 # Trong code, binding này xuất hiện dưới tên env.DB
