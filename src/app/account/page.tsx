@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
@@ -43,11 +42,7 @@ function EyeIcon({ open }: { open: boolean }) {
 
 export default function AccountPage() {
   const { user, login, register, logout } = useAuth();
-  const router = useRouter();
-  /* Tài khoản nhân sự không dùng trang khách này: đăng nhập xong đưa thẳng sang /admin, để không hiện "Xin chào, Admin MONA" như khách. */
-  useEffect(() => {
-    if (user && user.role && user.role !== "customer") router.replace("/admin");
-  }, [user, router]);
+  /* Đăng nhập bằng 1 tài khoản chung: admin/nhân viên đăng nhập xong vẫn ở lại trang web (My Account), muốn vào quản trị thì bấm icon tài khoản trên header hoặc gõ /admin. */
   const { count, setOpen } = useCart();
   const [tab, setTab] = useState<"login" | "register">("login");
   const [error, setError] = useState("");
@@ -66,8 +61,6 @@ export default function AccountPage() {
   // hiện/ẩn mật khẩu (nút con mắt)
   const [showLoginPass, setShowLoginPass] = useState(false);
   const [showRegPass, setShowRegPass] = useState(false);
-
-  if (user && user.role && user.role !== "customer") return null;
 
   if (user) {
     return (
