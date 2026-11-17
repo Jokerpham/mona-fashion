@@ -428,9 +428,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f4f2] flex flex-col md:flex-row">
-      {/* Thanh bên (desktop) */}
-      <aside className="hidden md:flex md:w-80 shrink-0 bg-[#171a21] text-white flex-col min-h-screen sticky top-0">
+    <div className="min-h-screen md:h-screen bg-[#f4f4f2] flex flex-col md:flex-row md:overflow-hidden">
+      {/* Thanh bên (desktop): cố định cao full màn hình, dính sát mép trái,
+         không trôi khi cuộn trang. Nội dung menu dài hơn màn hình thì tự
+         cuộn bên trong sidebar. */}
+      <aside className="hidden md:flex md:w-80 shrink-0 bg-[#171a21] text-white flex-col md:h-screen md:overflow-y-auto">
         <SidebarContent {...sidebarProps} />
       </aside>
 
@@ -460,7 +462,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </div>
       )}
 
-      <div className="flex-1 min-w-0 flex flex-col">
+      {/* Cột nội dung bên phải: vùng duy nhất được cuộn dọc (thanh trên cùng
+         vẫn dính ở đầu cột nhờ sticky). */}
+      <div className="flex-1 min-w-0 flex flex-col md:h-screen md:overflow-y-auto">
         <div className="hidden md:flex items-center justify-between px-10 py-3 bg-white border-b sticky top-0 z-30">
           <p className="text-sm text-neutral-500">Khu vực quản trị — MONA Fashion</p>
           {canSeeMessages && <AdminBell />}

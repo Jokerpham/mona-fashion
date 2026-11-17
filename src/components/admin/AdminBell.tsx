@@ -8,8 +8,10 @@ import { useRouter } from "next/navigation";
 import { useMessages } from "@/lib/store";
 
 export default function AdminBell() {
-  const { messages } = useMessages();
+  const { messages, deleteMessage } = useMessages();
   const [open, setOpen] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -24,13 +26,36 @@ export default function AdminBell() {
 
   const openMessage = (id: string) => {
     setOpen(false);
+    setConfirming(false);
     router.push(`/admin/messages?id=${encodeURIComponent(id)}`);
+  };
+
+  /* Xóa hết tất cả tin nhắn: bấm "Xóa hết" rồi bấm "Xác nhận xóa?" để xóa.
+     Dùng hàm xóa từng tin có sẵn, xóa xong danh sách tự tải lại. */
+  const handleClearAll = async () => {
+    setDeleting(true);
+    try {
+      const ids = messages.map((m) => m.id);
+      for (const id of ids) {
+        try {
+          await deleteMessage(id);
+        } catch {
+          /* Bỏ qua tin lỗi, xóa tiếp các tin còn lại. */
+        }
+      }
+    } finally {
+      setDeleting(false);
+      setConfirming(false);
+    }
   };
 
   return (
     <div ref={ref} className="relative">
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          setOpen((v) => !v);
+          setConfirming(false);
+        }}
         aria-label="Thông báo"
         title="Thông báo"
         className="relative w-10 h-10 grid place-items-center bg-white border shadow-sm hover:border-black text-lg"
@@ -44,7 +69,25 @@ export default function AdminBell() {
       </button>
       {open && (
         <div className="absolute right-0 top-12 w-80 max-w-[calc(100vw-2rem)] bg-white shadow-xl border z-50 text-neutral-900 text-left">
-          <p className="px-4 py-3 font-medium border-b">Tin nhắn gửi đến ({messages.length})</p>
+          <div className="px-4 py-3 border-b flex items-center justify-between gap-2">
+            <p className="font-medium">Tin nhắn gửi đến ({messages.length})</p>
+            {messages.length > 0 && !confirming && !deleting && (
+              <button onClick={() => setConfirming(true)} className="text-xs text-red-600 hover:underline shrink-0">
+                Xóa hết
+              </button>
+            )}
+            {messages.length > 0 && confirming && !deleting && (
+              <span className="flex items-center gap-2 shrink-0">
+                <button onClick={handleClearAll} className="text-xs font-medium text-white bg-red-600 px-2 py-1 rounded">
+                  Xác nhận xóa?
+                </button>
+                <button onClick={() => setConfirming(false)} className="text-xs text-neutral-500 hover:underline">
+                  Hủy
+                </button>
+              </span>
+            )}
+            {deleting && <span className="text-xs text-neutral-500 shrink-0">Đang xóa…</span>}
+          </div>
           {messages.length === 0 ? (
             <p className="px-4 py-6 text-sm text-neutral-500">Chưa có tin nhắn nào.</p>
           ) : (
