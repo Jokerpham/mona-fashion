@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { logActivity } from "@/lib/activity";
 import AdminAvatar from "@/components/admin/AdminAvatar";
 
@@ -40,7 +40,7 @@ const label = "block text-sm mb-1";
 const field = "border w-full px-3 py-2.5 pr-10 outline-none focus:border-black";
 
 export default function AdminSettingsPage() {
-  const { user, changePassword, listStaff, updateStaff } = useAuth();
+  const { user, changeAdminPassword, listStaff, updateStaff } = useAdminAuth();
   const isAdmin = user?.role === "admin";
   const avatarBoxRef = useRef<HTMLDivElement>(null);
   // Nút "Đổi ảnh đại diện" mở đúng modal của AdminAvatar (dùng chung trạng
@@ -99,7 +99,7 @@ export default function AdminSettingsPage() {
       setError("Mật khẩu nhập lại chưa khớp với mật khẩu mới.");
       return;
     }
-    const r = changePassword(current, next);
+    const r = changeAdminPassword(current, next);
     if (!r.ok) {
       setError(r.error || "Đổi mật khẩu thất bại.");
       return;

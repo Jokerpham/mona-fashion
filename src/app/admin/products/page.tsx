@@ -1,7 +1,7 @@
 "use client";
 import { Fragment, useState } from "react";
 import { useProducts, slugify, type Product } from "@/lib/store";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { logActivity } from "@/lib/activity";
 import {
   canDeleteProduct,
@@ -33,7 +33,7 @@ const EMPTY: Form = { name: "", slug: "", price: "", oldPrice: "", category: "wo
 
 export default function AdminProducts() {
   const { products, addProduct, updateProduct, updateProductStock, deleteProduct, resetProducts } = useProducts();
-  const { user } = useAuth();
+  const { user } = useAdminAuth();
   const [editing, setEditing] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<Form>(EMPTY);

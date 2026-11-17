@@ -1,11 +1,11 @@
 "use client";
 import { useSubscribers } from "@/lib/store";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { logActivity } from "@/lib/activity";
 
 export default function AdminSubscribers() {
   const { subscribers, deleteSubscriber } = useSubscribers();
-  const { user } = useAuth();
+  const { user } = useAdminAuth();
 
   const copyAll = () => {
     const text = subscribers.map((s) => s.email).join(", ");

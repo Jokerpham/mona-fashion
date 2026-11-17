@@ -5,12 +5,12 @@
    chuông thông báo sẽ sang đây và mở đúng tin đó (?id=...). */
 import { useEffect, useState } from "react";
 import { useMessages, fetchReplies, postReply, type MessageReply } from "@/lib/store";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { logActivity } from "@/lib/activity";
 
 export default function AdminMessages() {
   const { messages, deleteMessage } = useMessages();
-  const { user } = useAuth();
+  const { user } = useAdminAuth();
   const [openId, setOpenId] = useState<string | null>(null);
   /* Đoạn chat trong tin đang mở: các lượt trả lời + ô nhắn lại cho khách. */
   const [replies, setReplies] = useState<MessageReply[]>([]);

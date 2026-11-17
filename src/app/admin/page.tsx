@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useOrders, useProducts, useMessages, useSubscribers } from "@/lib/store";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { logActivity } from "@/lib/activity";
 import { canAccessSection, canDeleteOrder } from "@/lib/roles";
 import { formatPrice } from "@/lib/format";
@@ -11,7 +11,7 @@ export default function AdminDashboard() {
   const { products } = useProducts();
   const { messages } = useMessages();
   const { subscribers } = useSubscribers();
-  const { user } = useAuth();
+  const { user } = useAdminAuth();
 
   /* Doanh thu không tính đơn đã hủy và đơn hoàn trả. */
   const revenue = orders.filter((o) => o.status !== "Đã hủy" && o.status !== "Hoàn trả").reduce((s, o) => s + o.total, 0);

@@ -12,7 +12,7 @@ import {
   type CouponScope,
 } from "@/lib/coupons";
 import { useProducts } from "@/lib/store";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { logActivity } from "@/lib/activity";
 import type { Product } from "@/data/products";
 
@@ -36,7 +36,7 @@ const EMPTY: Form = {
 export default function AdminCoupons() {
   const { coupons, addCoupon, toggleCoupon, deleteCoupon } = useCoupons();
   const { products } = useProducts();
-  const { user } = useAuth();
+  const { user } = useAdminAuth();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<Form>(EMPTY);
   const [error, setError] = useState("");

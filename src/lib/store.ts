@@ -95,6 +95,13 @@ function useApiList<T>(path: string, seed: T[]) {
   }, [path]);
   useEffect(() => {
     refresh();
+    // Khi quay lại tab (ví dụ sửa xong ở /admin rồi mở lại tab shop),
+    // tải lại danh sách để thấy dữ liệu mới ngay lập tức.
+    const onFocus = () => {
+      refresh();
+    };
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
   }, [refresh]);
   return { list, refresh, ready };
 }

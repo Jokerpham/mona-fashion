@@ -5,7 +5,7 @@
    đứt liên kết (API trả lỗi, trang hiện lỗi đó). */
 import { useState } from "react";
 import { useCategories, slugify, type Category } from "@/lib/store";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { logActivity } from "@/lib/activity";
 
 type Form = { name: string; slug: string };
@@ -13,7 +13,7 @@ const EMPTY: Form = { name: "", slug: "" };
 
 export default function AdminCategories() {
   const { categories, addCategory, updateCategory, deleteCategory } = useCategories();
-  const { user } = useAuth();
+  const { user } = useAdminAuth();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
   const [form, setForm] = useState<Form>(EMPTY);

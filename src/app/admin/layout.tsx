@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { useOrders, useProducts } from "@/lib/store";
 import {
   ADMIN_ROLES,
@@ -234,7 +234,7 @@ function EyeIcon({ open }: { open: boolean }) {
 }
 
 function AdminLogin() {
-  const { login } = useAuth();
+  const { adminLogin } = useAdminAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -242,20 +242,13 @@ function AdminLogin() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const res = login(email.trim(), password, true);
+    // Đăng nhập riêng của khu vực quản trị (phiên admin_session): tài khoản
+    // quản trị cứng admin@mona.local / admin123 luôn vào được; tài khoản
+    // nhân sự (kho/cskh/biên tập) cũng vào được; tài khoản khách bị chặn.
+    const res = adminLogin(email.trim(), password);
     if (!res.ok) {
       setError(res.error || "Đăng nhập thất bại.");
       return;
-    }
-    // Kiểm tra quyền: tài khoản admin và nhân sự (kho/cskh/biên tập) mới
-    // vào được; tài khoản khách hàng vẫn bị chặn ở đây.
-    try {
-      const s = JSON.parse(localStorage.getItem("mona-session") || "null");
-      if (!s || !ADMIN_ROLES.includes(s.role)) {
-        setError("Tài khoản này không có quyền quản trị. Hãy dùng tài khoản admin hoặc nhân sự.");
-      }
-    } catch {
-      setError("Không kiểm tra được quyền truy cập.");
     }
   };
 
@@ -377,7 +370,7 @@ function SidebarContent({ pathname, avatarName, title, email, nav, lowStock, new
 }
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
-  const { user, logout } = useAuth();
+  const { user, adminLogout } = useAdminAuth();
   const pathname = usePathname();
   const router = useRouter();
   const [checked, setChecked] = useState(false);
@@ -424,7 +417,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     nav: visibleNav,
     lowStock,
     newOrderCount,
-    onLogout: logout,
+    onLogout: adminLogout,
   };
 
   return (

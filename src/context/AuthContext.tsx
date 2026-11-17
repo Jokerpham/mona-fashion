@@ -24,8 +24,11 @@ type AuthCtx = {
      (xem src/lib/roles.ts về giới hạn này). */
   listStaff: () => { name: string; email: string; role: StaffRole; phone?: string }[];
   createStaff: (name: string, email: string, password: string, role: StaffRole, phone?: string) => { ok: boolean; error?: string };
-  updateStaff: (email: string, patch: { name?: string; role?: StaffRole; password?: string; phone?: string }) => { ok: boolean; error?: string };
-  deleteStaff: (email: string) => { ok: boolean; error?: string };
+  /* caller: thông tin người đang thao tác (AdminAuthContext truyền quyền/
+     email của admin đang đăng nhập). Không truyền thì dùng phiên khách
+     đang mở như trước. */
+  updateStaff: (email: string, patch: { name?: string; role?: StaffRole; password?: string; phone?: string }, caller?: { isAdmin?: boolean; email?: string }) => { ok: boolean; error?: string };
+  deleteStaff: (email: string, callerEmail?: string) => { ok: boolean; error?: string };
 };
 
 const Ctx = createContext<AuthCtx | null>(null);
@@ -107,6 +110,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return {
         ok: false,
         error: "Sai tên tài khoản/email hoặc mật khẩu. Nếu chưa có tài khoản, hãy chọn tab Đăng ký.",
+      };
+    }
+    /* Khu vực khách hàng chỉ dành cho tài khoản khách: tài khoản quản trị /
+       nhân sự đăng nhập riêng ở /admin (AdminAuthContext, phiên
+       admin_session), không dùng chung phiên mua sắm. */
+    if (found.role && found.role !== "customer") {
+      return {
+        ok: false,
+        error: "Đây là tài khoản quản trị/nhân sự. Hãy đăng nhập ở trang quản trị (/admin).",
       };
     }
     startSession({ name: found.name, email: found.email, role: found.role || "customer", phone: found.phone }, remember);
@@ -191,10 +203,12 @@ function validPhone(raw: string): boolean {
     return { ok: true };
   };
 
-  const updateStaff: AuthCtx["updateStaff"] = (email, patch) => {
+  const updateStaff: AuthCtx["updateStaff"] = (email, patch, caller) => {
     const e = email.trim().toLowerCase();
+    const callerEmail = caller?.email ?? user?.email;
+    const callerIsAdmin = caller?.isAdmin ?? user?.role === "admin";
     // Tài khoản admin gốc không đổi quyền; không tự hạ quyền của chính mình.
-    if (patch.role !== undefined && (e === "admin@mona.local" || e === user?.email?.toLowerCase())) {
+    if (patch.role !== undefined && (e === "admin@mona.local" || e === callerEmail?.toLowerCase())) {
       return { ok: false, error: "Không đổi được quyền của tài khoản này." };
     }
     if (patch.role !== undefined && !STAFF_ROLES.includes(patch.role)) {
@@ -207,7 +221,7 @@ function validPhone(raw: string): boolean {
     let phoneToSave: string | undefined;
     let phoneChanged = false;
     if (patch.phone !== undefined) {
-      if (user?.role !== "admin") {
+      if (!callerIsAdmin) {
         return { ok: false, error: "Chỉ quản trị viên mới được sửa số điện thoại." };
       }
       const ph = patch.phone.trim();
@@ -243,12 +257,12 @@ function validPhone(raw: string): boolean {
     return { ok: true };
   };
 
-  const deleteStaff: AuthCtx["deleteStaff"] = (email) => {
+  const deleteStaff: AuthCtx["deleteStaff"] = (email, callerEmail) => {
     const e = email.trim().toLowerCase();
     if (e === "admin@mona.local") {
       return { ok: false, error: "Không xoá được tài khoản quản trị gốc." };
     }
-    if (e === user?.email?.toLowerCase()) {
+    if (e === (callerEmail ?? user?.email)?.toLowerCase()) {
       return { ok: false, error: "Không tự xoá tài khoản đang đăng nhập." };
     }
     const users = loadUsers();

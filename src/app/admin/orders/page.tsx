@@ -9,7 +9,7 @@
    qua điện thoại/Facebook) — đơn khách tự đặt trên shop vẫn tự hiện về. */
 import { Fragment, useMemo, useState } from "react";
 import { useOrders, useProducts, pushOrder, newId, type Order, type OrderItem } from "@/lib/store";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { logActivity } from "@/lib/activity";
 import {
   canChangeOrderStatus,
@@ -148,7 +148,7 @@ type ManualItem = { productId: string; size: string; qty: number };
 export default function AdminOrders() {
   const { orders, setStatus, deleteOrder, refreshOrders } = useOrders();
   const { products } = useProducts();
-  const { user } = useAuth();
+  const { user } = useAdminAuth();
   const [openId, setOpenId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | Order["status"]>("all");

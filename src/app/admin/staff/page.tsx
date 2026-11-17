@@ -5,7 +5,7 @@
    này. Tài khoản admin gốc (admin@mona.local) không đổi quyền, không xoá;
    không tự hạ quyền hay tự xoá tài khoản đang đăng nhập. */
 import { useEffect, useState } from "react";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { ROLE_LABELS, type StaffRole } from "@/lib/roles";
 import { logActivity } from "@/lib/activity";
 
@@ -15,7 +15,7 @@ const EMPTY: Form = { name: "", email: "", password: "", showPassword: false, ro
 const ROLES: StaffRole[] = ["admin", "kho", "cskh", "bientap"];
 
 export default function AdminStaff() {
-  const { user, listStaff, createStaff, updateStaff, deleteStaff } = useAuth();
+  const { user, listStaff, createStaff, updateStaff, deleteStaff } = useAdminAuth();
   const [rows, setRows] = useState<Row[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Row | null>(null);

@@ -6,7 +6,7 @@
    tài khoản đã đăng ký tương ứng, có hộp xác nhận). */
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useOrders, type Order } from "@/lib/store";
-import { useAuth } from "@/context/AuthContext";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import { logActivity } from "@/lib/activity";
 import { canDeleteCustomer } from "@/lib/roles";
 import { formatPrice } from "@/lib/format";
@@ -75,7 +75,7 @@ function deriveCustomers(orders: Order[], accounts: StoredAccount[]): Customer[]
 
 export default function AdminCustomers() {
   const { orders, deleteOrder } = useOrders();
-  const { user } = useAuth();
+  const { user } = useAdminAuth();
   const [accounts, setAccounts] = useState<StoredAccount[]>([]);
   const [openKey, setOpenKey] = useState<string | null>(null);
   const canDelete = canDeleteCustomer(user?.role);
